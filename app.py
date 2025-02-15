@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import google.generativeai as generativeai
-
+from math_check import is_mathematical_expression
 app = Flask(__name__)
 
 # Configure API key
@@ -17,14 +17,18 @@ def generate_text():
 
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
+        if(is_mathematical_expression(prompt)):
+            response = chat.send_message(prompt.strip())
+            return jsonify({'result': response.text}), 200
+        else:
+            return jsonify({'error': 'Prompt is not a mathematical expression'}), 400
 
-        response = chat.send_message(prompt.strip())
-
-        return jsonify({'result': response.text}), 200 if response.text else 500
+       
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # Render provides a dynamic port
