@@ -14,11 +14,10 @@ def generate_text():
         data = request.get_json()
         chat = model.start_chat()
         prompt = data.get('prompt')
-
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
         if(is_mathematical_expression(prompt)):
-            response = chat.send_message(prompt.strip())
+            response = chat.send_message("Solve this mather=matical expression: " + prompt.strip())
             return jsonify({'result': response.text}), 200
         else:
             return jsonify({'error': 'Prompt is not a mathematical expression'}), 400
