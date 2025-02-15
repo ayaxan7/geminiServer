@@ -4,13 +4,12 @@ import google.generativeai as generativeai
 
 app = Flask(__name__)
 
-# Configuration (API key should be set in environment variables)
-generativeai.configure(api_key=os.getenv("GOOGLE_API_KEY"))  # Removed hardcoded key
+# Configure API key
+generativeai.configure(api_key="AIzaSyCsb53oK-NQJd7OprTpFnLHGEDU1JESVOQ")
 
 @app.route('/api/generate', methods=['POST'])
-def generate_tex():
+def generate_text():
     try:
-        # Initialize the text generation model
         model = generativeai.GenerativeModel('gemini-pro')
         data = request.get_json()
         chat = model.start_chat()
@@ -19,18 +18,14 @@ def generate_tex():
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
 
-        
-         # Correct model for text generation
-        response = chat.send_message(prompt.rstrip().lstrip())
+        response = chat.send_message(prompt.strip())
 
-        if response.text:
-            return jsonify({'result': response.text}), 200
-        else:
-            return jsonify({'error': 'No response from model'}), 500
+        return jsonify({'result': response.text}), 200 if response.text else 500
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render provides a dynamic port
+    app.run(host='0.0.0.0', port=port, debug=False)
