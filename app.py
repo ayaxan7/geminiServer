@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import google.generativeai as generativeai
-from math_check import is_mathematical_expression
+# from math_check import is_mathematical_expression
 app = Flask(__name__)
 
 # Configure API key
@@ -16,8 +16,8 @@ def generate_text():
         prompt = data.get('prompt')
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
-        if(is_mathematical_expression(prompt)):
-            response = chat.send_message("Solve this mather=matical expression: " + prompt.strip())
+        response = chat.send_message(prompt.strip())
+        if response:
             return jsonify({'result': response.text}), 200
         else:
             return jsonify({'error': 'Prompt is not a mathematical expression'}), 400
