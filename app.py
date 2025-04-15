@@ -5,7 +5,7 @@ import google.generativeai as genai
 app = Flask(__name__)
 
 # Set your API key (preferably from environment variable for security)
-genai.configure(api_key="AIzaSyCsb53oK-NQJd7OprTpFnLHGEDU1JESVOQ")  # WARNING: Don't hardcode in production!
+genai.configure(api_key="AIzaSyADgQC2OxGbEkyQ8pAfsr7fMvrJ_3tT3lE")  # WARNING: Don't hardcode in production!
 
 @app.route('/api/generate', methods=['POST'])
 def generate_text():
