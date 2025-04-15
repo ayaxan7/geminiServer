@@ -10,7 +10,7 @@ generativeai.configure(api_key="AIzaSyADgQC2OxGbEkyQ8pAfsr7fMvrJ_3tT3lE")
 @app.route('/api/generate', methods=['POST'])
 def generate_text():
     try:
-        model = generativeai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
         data = request.get_json()
         chat = model.start_chat()
         prompt = data.get('prompt')
